@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.*
+*.log
+*.sqlite
+*.db
+.DS_Store
+android/.gradle/
+android/local.properties
