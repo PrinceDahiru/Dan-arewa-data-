@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>DAN AREWA DATA</title>
+
+<style>
+:root {
+  --purple:#4b4be8;
+  --purple2:#6565f3;
+  --light:#f0f0ff;
+  --ink:#172033;
+  --muted:#8490a3;
+  --line:#ececf5;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:#fff;color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+#auth{
+  min-height:100vh;display:flex;align-items:center;
+  justify-content:center;padding:25px;background:#f7f7ff;
+}
+.auth-card{
+  width:100%;max-width:420px;background:#fff;
+  padding:28px;border-radius:25px;
+  box-shadow:0 12px 40px #2221;
+}
+.logo{
+  font-size:27px;font-weight:900;color:var(--purple);
+  letter-spacing:-1px;
+}
+.sub{color:var(--muted);font-size:14px}
+.field{margin:17px 0}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+.field input,.field select{
+  width:100%;padding:15px;border:1px solid var(--line);
+  border-radius:13px;outline:none;background:#fff;
+}
+.field input:focus,.field select:focus{border-color:var(--purple)}
+.primary{
+  border:0;background:var(--purple);color:white;
+  padding:15px 20px;border-radius:15px;font-weight:800;
+  width:100%;box-shadow:0 8px 20px #4b4be833;
+}
+.link{color:var(--purple);font-weight:800;border:0;background:none}
+#app{display:none;max-width:760px;margin:auto;padding-bottom:100px}
+.top{
+  display:flex;align-items:center;gap:13px;padding:22px 20px 18px;
+}
+.avatar{
+  width:68px;height:68px;border-radius:50%;
+  display:grid;place-items:center;background:#eeeaff;
+  font-size:39px;border:2px solid #e7e4ff;
+}
+.welcome{flex:1;min-width:0}
+.welcome h2{margin:0;font-size:24px;font-weight:900}
+.welcome p{margin:5px 0;color:var(--muted);font-size:16px}
+.circle{
+  width:54px;height:54px;border:0;border-radius:50%;
+  background:#f4f4f8;font-size:22px;
+}
+main{padding:0 20px}
+.wallet{
+  margin-top:20px;padding:28px 23px 24px;
+  border-radius:31px;color:white;
+  background:
+    linear-gradient(135deg,#4148df,#5656ee 55%,#4449dd);
+  box-shadow:0 17px 30px #5555e844;
+  position:relative;overflow:hidden;
+}
+.wallet:before,.wallet:after{
+  content:"";position:absolute;width:230px;height:230px;
+  border:1px solid #ffffff16;transform:rotate(45deg);
+  background:#ffffff08;
+}
+.wallet:before{right:-90px;top:-120px}
+.wallet:after{left:-130px;bottom:-170px}
+.wallet-label{text-align:center;font-size:19px;position:relative}
+.balance{
+  text-align:center;font-size:clamp(34px,9vw,53px);
+  font-weight:900;letter-spacing:2px;margin:26px 0 31px;
+  position:relative;
+}
+.wallet-actions{display:flex;gap:12px;position:relative}
+.wallet-actions button{
+  flex:1;border:0;border-radius:40px;padding:17px 10px;
+  font-weight:800;font-size:15px;
+}
+.fund{background:white;color:#20243a}
+.referral{background:#ffffff30;color:white}
+.banner{
+  margin:26px 0;background:#f0f0ff;color:#24243c;
+  border-radius:18px;padding:22px 18px;text-align:center;
+  font-weight:650;line-height:1.5;border:0;width:100%;
+}
+.section-title{
+  font-size:23px;font-weight:900;margin:32px 0 17px;
+}
+.account-row{
+  display:flex;gap:13px;overflow-x:auto;padding-bottom:5px;
+}
+.account-card{
+  min-width:85%;border:1.5px solid var(--line);
+  border-radius:22px;padding:22px;background:white;
+}
+.bank{font-weight:850;color:var(--purple);font-size:19px}
+.account-name{color:var(--muted);margin:10px 0 23px}
+.account-number{font-size:24px;font-weight:900;letter-spacing:1px}
+.copy{
+  float:right;border:0;background:#f0f0ff;color:var(--purple);
+  border-radius:12px;padding:12px;
+}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.quick{text-align:center;border:0;background:white;padding:7px 0;color:var(--ink)}
+.quick-icon{
+  width:68px;height:68px;margin:auto auto 9px;
+  border-radius:50%;display:grid;place-items:center;
+  background:#f0f0ff;color:var(--purple);font-size:27px;
+}
+.quick small{font-size:12px;font-weight:750}
+.page{display:none}
+.page.active{display:block}
+.network-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+}
+.network{
+  border:1.5px solid var(--line);background:white;
+  padding:18px;border-radius:18px;text-align:left;font-weight:850;
+}
+.network.selected{border:2px solid var(--purple);background:#f7f7ff}
+.network span{display:block;font-size:25px;margin-bottom:8px}
+.plan-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.plan{
+  border:1px solid var(--line);border-radius:17px;
+  background:white;padding:16px;text-align:left;
+}
+.plan strong{display:block;font-size:20px}
+.plan small{color:var(--muted)}
+.plan b{display:block;color:var(--purple);margin-top:10px}
+.input{
+  width:100%;padding:15px;border:1px solid var(--line);
+  border-radius:13px;margin:8px 0 16px;
+}
+.transaction{
+  padding:17px 0;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:10px;
+}
+.transaction small{display:block;color:var(--muted);margin-top:5px}
+.status{color:#169b67;font-weight:800}
+.profile-card{
+  padding:20px;border:1px solid var(--line);
+  border-radius:20px;margin:14px 0;
+}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.action-btn{
+  border:0;background:#f0f0ff;color:var(--purple);
+  padding:13px;border-radius:12px;font-weight:800;
+}
+.bottom{
+  position:fixed;bottom:0;left:0;right:0;background:#fff;
+  border-top:1px solid var(--line);display:flex;
+  justify-content:space-around;padding:10px 4px 13px;
+  z-index:5;max-width:760px;margin:auto;
+}
+.nav{
+  border:0;background:none;color:#8992a2;
+  font-weight:750;font-size:12px;min-width:65px;
+}
+.nav span{display:block;font-size:23px;margin-bottom:4px}
+.nav.active{color:var(--purple)}
+.notice{
+  background:#f0f0ff;padding:15px;border-radius:14px;
+  color:#444477;font-size:13px;margin-top:20px;
+}
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:#172033;color:white;padding:13px 20px;
+  border-radius:30px;display:none;z-index:20;
+}
+[hidden]{display:none!important}
+@media(max-width:390px){
+  main{padding:0 14px}.top{padding-left:14px;padding-right:14px}
+  .quick-icon{width:58px;height:58px}
+  .wallet{padding:25px 16px}
+}
+</style>
+</head>
+
+<body>
+
+<section id="auth">
+  <div class="auth-card">
+    <div class="logo">DAN AREWA DATA</div>
+    <p class="sub">Your trusted demo data platform</p>
+    <h2 id="authTitle">Welcome back 👋</h2>
+    <form id="authForm">
+      <div class="field" id="nameWrap" hidden>
+        <label>Full name</label>
+        <input id="fullName" placeholder="Enter your name">
+      </div>
+      <div class="field">
+        <label>Email address</label>
+        <input id="email" type="email" required placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label>6-digit Login PIN</label>
+        <input id="pin" type="password" inputmode="numeric"
+        maxlength="6" minlength="6" pattern="[0-9]{6}" required
+        placeholder="••••••">
+      </div>
+      <div class="field" id="txWrap" hidden>
+        <label>4-digit Transaction PIN</label>
+        <input id="txPin" type="password" inputmode="numeric"
+        maxlength="4" minlength="4" pattern="[0-9]{4}">
+      </div>
+      <button class="primary" id="authSubmit">Login</button>
+    </form>
+    <p class="sub" style="text-align:center;margin-top:20px">
+      <span id="switchText">New here?</span>
+      <button class="link" id="switchAuth" type="button">Create account</button>
+    </p>
+    <p class="notice">Demo application only. No real payment or data delivery.</p>
+  </div>
+</section>
+
+<div id="app">
+  <header class="top">
+    <div class="avatar" id="avatar">👨🏽</div>
+    <div class="welcome">
+      <h2 id="helloName">dan Arewa</h2>
+      <p>Welcome back 👋</p>
+    </div>
+    <button class="circle" onclick="toast('Support is available in demo mode')">🎧</button>
+    <button class="circle" onclick="toast('You are all caught up')">♧</button>
+  </header>
+
+  <main>
+    <section class="page active" id="dashboard">
+      <div class="wallet">
+        <div class="wallet-label">Wallet Balance &nbsp; <button onclick="toggleBalance()" style="border:0;background:none;color:white">◉</button></div>
+        <div class="balance" id="balance">₦0.00</div>
+        <div class="wallet-actions">
+          <button class="fund" onclick="fundWallet()">＋ Fund Wallet</button>
+          <button class="referral" onclick="shareReferral()">➤ Referral</button>
+        </div>
+      </div>
+
+      <button class="banner" onclick="toast('Virtual account feature is simulated in this demo')">
+        Click here to Create/Update your virtual account as required by CBN
+      </button>
+
+      <h2 class="section-title">Virtual accounts</h2>
+      <div class="account-row">
+        <div class="account-card">
+          <div class="bank">palmpay</div>
+          <div class="account-name" id="accountName">dan arewa demo account</div>
+          <div class="row">
+            <div class="account-number">6697032545</div>
+            <button class="copy" onclick="copyText('6697032545')">▢</button>
+          </div>
+        </div>
+        <div class="account-card">
+          <div class="bank">Demo Bank</div>
+          <div class="account-name">Demo virtual account</div>
+          <div class="account-number">1000000000</div>
+          <button class="copy" onclick="copyText('1000000000')">▢</button>
+        </div>
+      </div>
+
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="quick-grid">
+        <button class="quick" onclick="go('data')"><div class="quick-icon">♧</div><small>Airtime</small></button>
+        <button class="quick" onclick="go('data')"><div class="quick-icon">◉</div><small>Data</small></button>
+        <button class="quick" onclick="toast('TV subscription demo')"><div class="quick-icon">▣</div><small>TV</small></button>
+        <button class="quick" onclick="toast('More services coming soon')"><div class="quick-icon">⠿</div><small>More</small></button>
+      </div>
+
+      <h2 class="section-title">Recent Transactions</h2>
+      <div id="recent"></div>
+      <div class="notice">This is a demonstration application. All balances and transactions are simulated.</div>
+    </section>
+
+    <section class="page" id="data">
+      <h2 class="section-title">Buy Data</h2>
+      <p class="sub">Choose your network</p>
+      <div class="network-grid">
+        <button class="network selected" onclick="network('MTN',this)"><span>🟡</span>MTN</button>
+        <button class="network" onclick="network('Airtel',this)"><span>🔴</span>Airtel</button>
+        <button class="network" onclick="network('Glo',this)"><span>🟢</span>Glo</button>
+        <button class="network" onclick="network('9mobile',this)"><span>🟢</span>9mobile</button>
+      </div>
+      <h2 class="section-title">Select Data Plan</h2>
+      <div class="plan-grid" id="plans"></div>
+      <h2 class="section-title">Purchase details</h2>
+      <label class="sub">Phone number</label>
+      <input class="input" id="phone" type="tel" maxlength="11" placeholder="08012345678">
+      <label class="sub">Transaction PIN</label>
+      <input class="input" id="purchasePin" type="password" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
+      <button class="primary" onclick="buyData()">Continue</button>
+    </section>
+
+    <section class="page" id="history">
+      <h2 class="section-title">Wallet History</h2>
+      <div id="historyList"></div>
+    </section>
+
+    <section class="page" id="account">
+      <h2 class="section-title">My Account</h2>
+      <div class="profile-card">
+        <div class="avatar">👨🏽</div>
+        <h2 id="profileName">dan Arewa</h2>
+        <p class="sub" id="profileEmail"></p>
+      </div>
+      <div class="profile-card">
+        <h3>Profile settings</h3>
+        <label class="sub">Full name</label>
+        <input class="input" id="editName">
+        <label class="sub">Email</label>
+        <input class="input" id="editEmail" disabled>
+        <button class="primary" onclick="updateProfile()">Update Profile</button>
+      </div>
+      <div class="profile-card">
+        <h3>Change Login PIN</h3>
+        <input class="input" id="newPin" type="password" maxlength="6" placeholder="New 6-digit PIN">
+        <button class="action-btn" onclick="changePin()">Update PIN</button>
+      </div>
+      <div class="profile-card">
+        <h3>Security</h3>
+        <p class="sub">Your demo account is stored in this browser.</p>
+        <button class="action-btn" onclick="toast('Biometric login requires a secure production app')">Fingerprint settings</button>
+      </div>
+      <div class="profile-card">
+        <button class="primary" onclick="logout()">Logout</button>
+      </div>
+      <div class="profile-card" id="adminPanel" hidden>
+        <h3>Admin Dashboard</h3>
+        <p class="sub">Update demo data plan prices</p>
+        <select class="input" id="adminNetwork">
+          <option>MTN</option><option>Airtel</option>
+          <option>Glo</option><option>9mobile</option>
+        </select>
+        <select class="input" id="adminPlan">
+          <option value="500MB">500MB</option><option value="1GB">1GB</option>
+          <option value="2GB">2GB</option><option value="5GB">5GB</option>
+          <option value="10GB">10GB</option>
+        </select>
+        <input class="input" id="adminPrice" type="number" placeholder="New price">
+        <button class="primary" onclick="updatePrice()">Update Price</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom">
+    <button class="nav active" data-page="dashboard" onclick="go('dashboard')"><span>⌂</span>Dashboard</button>
+    <button class="nav" data-page="data" onclick="go('data')"><span>⌁</span>Data</button>
+    <button class="nav" data-page="history" onclick="go('history')"><span>▤</span>Wallet History</button>
+    <button class="nav" data-page="account" onclick="go('account')"><span>♙</span>Account</button>
+  </nav>
+</div>
+
+<div class="toast" id="toastBox"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const KEY = "dan_arewa_3_users";
+const PRICEKEY = "dan_arewa_3_prices";
+let users = JSON.parse(localStorage.getItem(KEY) || "{}");
+let prices = JSON.parse(localStorage.getItem(PRICEKEY) || "{}");
+let current = sessionStorage.getItem("dan_arewa_3_session");
+let registering = false;
+let selectedNetwork = "MTN";
+let selectedPlan = "1GB";
+let hiddenBalance = false;
+
+const defaultPrices = {
+  "500MB":150,"1GB":300,"2GB":600,"5GB":1400,"10GB":2700
+};
+
+function saveUsers(){
+  localStorage.setItem(KEY,JSON.stringify(users));
+}
+function savePrices(){
+  localStorage.setItem(PRICEKEY,JSON.stringify(prices));
+}
+function toast(message){
+  $("toastBox").textContent=message;
+  $("toastBox").style.display="block";
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>$("toastBox").style.display="none",2600);
+}
+function money(n){
+  return "₦"+Number(n||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function authMode(){
+  $("authTitle").textContent=registering?"Create your account":"Welcome back 👋";
+  $("authSubmit").textContent=registering?"Create Account":"Login";
+  $("nameWrap").hidden=!registering;
+  $("txWrap").hidden=!registering;
+  $("fullName").required=registering;
+  $("txPin").required=registering;
+  $("switchText").textContent=registering?"Already have an account?":"New here?";
+  $("switchAuth").textContent=registering?"Login":"Create account";
+}
+$("switchAuth").onclick=()=>{
+  registering=!registering;
+  authMode();
+};
+$("authForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const email=$("email").value.trim().toLowerCase();
+  const pin=$("pin").value.trim();
+  if(registering){
+    const name=$("fullName").value.trim();
+    const tx=$("txPin").value.trim();
+    if(!name||!/^[0-9]{6}$/.test(pin)||!/^[0-9]{4}$/.test(tx)){
+      toast("Enter name, 6-digit PIN and 4-digit transaction PIN");
+      return;
+    }
+    if(users[email]){
+      toast("Account already exists. Please login.");
+      return;
+    }
+    users[email]={name,email,pin,tx,balance:0,history:[],role:"user"};
+    saveUsers();
+  }else{
+    if(!users[email]||users[email].pin!==pin){
+      toast("Incorrect email or PIN");
+      return;
+    }
+  }
+  current=email;
+  sessionStorage.setItem("dan_arewa_3_session",email);
+  enterApp();
+});
+function enterApp(){
+  if(!users[current])return logout();
+  $("auth").style.display="none";
+  $("app").style.display="block";
+  render();
+  go("dashboard");
+}
+function logout(){
+  current=null;
+  sessionStorage.removeItem("dan_arewa_3_session");
+  $("app").style.display="none";
+  $("auth").style.display="flex";
+  $("pin").value="";
+}
+function render(){
+  const u=users[current];
+  $("helloName").textContent=u.name;
+  $("profileName").textContent=u.name;
+  $("profileEmail").textContent=u.email;
+  $("accountName").textContent=u.name;
+  $("editName").value=u.name;
+  $("editEmail").value=u.email;
+  $("adminPanel").hidden=u.role!=="admin";
+  $("balance").textContent=hiddenBalance?"₦••••••":money(u.balance);
+  renderHistory();
+  renderPlans();
+}
+function toggleBalance(){
+  hiddenBalance=!hiddenBalance;
+  render();
+}
+function go(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  $(page).classList.add("active");
+  document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.page===page));
+  if(page==="history")renderHistory();
+}
+function fundWallet(){
+  const amount=Number(prompt("Enter demo funding amount (₦):"));
+  if(!Number.isFinite(amount)||amount<=0)return;
+  users[current].balance+=amount;
+  addHistory("Demo wallet funding",amount,"Credit");
+  saveUsers();render();
+  toast("Demo wallet funded successfully");
+}
+function shareReferral(){
+  const code="DAREWA-"+current.split("@")[0].toUpperCase();
+  if(navigator.share){
+    navigator.share({title:"DAN AREWA DATA",text:"Join my demo app with referral code "+code}).catch(()=>{});
+  }else copyText(code);
+}
+function copyText(value){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(value).then(()=>toast("Copied successfully")).catch(()=>toast(value));
+  }else toast(value);
+}
+function network(name,button){
+  selectedNetwork=name;
+  document.querySelectorAll(".network").forEach(n=>n.classList.remove("selected"));
+  button.classList.add("selected");
+  renderPlans();
+}
+function getPrice(plan){
+  return Number(prices[selectedNetwork+"_"+plan] ?? defaultPrices[plan]);
+}
+function renderPlans(){
+  if(!$("plans"))return;
+  $("plans").innerHTML=Object.keys(defaultPrices).map(plan=>`
+    <button class="plan" onclick="selectPlan('${plan}',this)">
+      <strong>${plan}</strong>
+      <small>${selectedNetwork} Data Bundle</small>
+      <b>${money(getPrice(plan))}</b>
+    </button>`).join("");
+}
+function selectPlan(plan,button){
+  selectedPlan=plan;
+  document.querySelectorAll(".plan").forEach(p=>p.style.borderColor="");
+  button.style.borderColor="var(--purple)";
+  toast(plan+" selected");
+}
+function addHistory(title,amount,type){
+  const u=users[current];
+  u.history.unshift({
+    title,amount,type,ref:"DAD"+Date.now(),
+    date:new Date().toLocaleString()
+  });
+}
+function buyData(){
+  const phone=$("phone").value.trim();
+  const pin=$("purchasePin").value.trim();
+  const u=users[current];
+  if(!/^0[0-9]{10}$/.test(phone)){
+    toast("Enter a valid 11-digit phone number");
+    return;
+  }
+  if(pin!==u.tx){
+    toast("Incorrect transaction PIN");
+    return;
+  }
+  const price=getPrice(selectedPlan);
+  if(u.balance<price){
+    toast("Insufficient demo wallet balance");
+    return;
+  }
+  if(!confirm("Confirm demo purchase of "+selectedPlan+" "+selectedNetwork+" for "+money(price)+"?"))return;
+  u.balance-=price;
+  addHistory(selectedNetwork+" "+selectedPlan+" to "+phone,price,"Debit");
+  saveUsers();
+  $("purchasePin").value="";
+  render();
+  toast("Demo transaction successful");
+  go("history");
+}
+function renderHistory(){
+  const list=users[current].history||[];
+  const html=list.length?list.map(t=>`
+    <div class="transaction">
+      <div><strong>${t.title}</strong><small>${t.date}<br>Ref: ${t.ref}</small></div>
+      <div style="text-align:right"><strong>${t.type==="Credit"?"+":"-"}${money(t.amount)}</strong><small class="status">${t.type}</small></div>
+    </div>`).join(""):'<p class="sub">No transactions yet.</p>';
+  $("historyList").innerHTML=html;
+  $("recent").innerHTML=list.slice(0,3).map(t=>`
+    <div class="transaction"><div><strong>${t.title}</strong><small>${t.date}</small></div>
+    <strong>${t.type==="Credit"?"+":"-"}${money(t.amount)}</strong></div>`).join("")||'<p class="sub">Your recent transactions will appear here.</p>';
+}
+function updateProfile(){
+  const name=$("editName").value.trim();
+  if(!name)return toast("Enter your name");
+  users[current].name=name;
+  saveUsers();render();
+  toast("Profile updated successfully");
+}
+function changePin(){
+  const pin=$("newPin").value.trim();
+  if(!/^[0-9]{6}$/.test(pin))return toast("PIN must contain 6 digits");
+  users[current].pin=pin;
+  saveUsers();
+  $("newPin").value="";
+  toast("Login PIN updated successfully");
+}
+function updatePrice(){
+  if(users[current].role!=="admin")return toast("Admin access required");
+  const plan=$("adminPlan").value;
+  const network=$("adminNetwork").value;
+  const price=Number($("adminPrice").value);
+  if(!Number.isFinite(price)||price<=0)return toast("Enter a valid price");
+  prices[network+"_"+plan]=price;
+  savePrices();
+  renderPlans();
+  toast("Demo price updated successfully");
+}
+if(!users["admin@danarewa.demo"]){
+  users["admin@danarewa.demo"]={
+    name:"DAN AREWA ADMIN",
+    email:"admin@danarewa.demo",
+    pin:"123456",tx:"1234",
+    balance:5101,history:[],role:"admin"
+  };
+  saveUsers();
+}
+if(!Object.keys(prices).length)savePrices();
+authMode();
+if(current&&users[current])enterApp();
+</script>
+</body>
+</html>
