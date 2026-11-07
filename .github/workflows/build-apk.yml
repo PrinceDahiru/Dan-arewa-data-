@@ -39,8 +39,23 @@ jobs:
       - name: Install Capacitor
         run: npm install
 
+      - name: Bundle biometric plugin
+        run: npx esbuild biometric-entry.js --bundle --format=iife --outfile=public/biometric.js
+
       - name: Create Android project
         run: npx cap add android
+
+      - name: Add Android biometric permission
+        run: |
+          python3 - <<'PYMANIFEST'
+          from pathlib import Path
+          p = Path("android/app/src/main/AndroidManifest.xml")
+          s = p.read_text()
+          permission = '<uses-permission android:name="android.permission.USE_BIOMETRIC" />'
+          if permission not in s:
+              s = s.replace('<application', permission + '\\n    <application', 1)
+          p.write_text(s)
+          PYMANIFEST
 
       - name: Sync app
         run: npx cap sync android
